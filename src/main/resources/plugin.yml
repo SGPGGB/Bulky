@@ -1,0 +1,7 @@
+name: Bulky
+version: "${finalversion}"
+main: de.sgpggb.bulky.Bulky
+api-version: "${mcapi}"
+softdepend: [PluginUtilitiesLib, SGPGGBEconomySpigot]
+commands:
+  bulky:
