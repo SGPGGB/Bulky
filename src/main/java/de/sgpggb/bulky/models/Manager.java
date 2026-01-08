@@ -99,7 +99,9 @@ public class Manager {
      * @return true, if it is a bulky chest
      */
     public boolean isBulkyBlock(Block block) {
-        if (!(block instanceof Chest chest))
+        if (!block.getType().equals(Material.CHEST))
+            return false;
+        if (!(block.getState() instanceof Chest chest))
             return false;
         return isBulkyBlock(chest);
     }

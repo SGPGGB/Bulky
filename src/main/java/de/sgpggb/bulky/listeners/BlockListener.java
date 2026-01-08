@@ -5,14 +5,18 @@ import de.sgpggb.bulky.misc.Utils;
 import de.sgpggb.bulky.models.ChestContainer;
 import de.sgpggb.bulky.models.Manager;
 import de.sgpggb.pluginutilitieslib.logging.Logging;
+import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -43,6 +47,11 @@ public class BlockListener implements Listener {
             return;
 
         if (!manager.isBulkyBlock(chest))
+            return;
+
+        event.setCancelled(true);
+
+        if (manager.isLocked(chest))
             return;
 
         ItemStack moving = event.getItem();
@@ -87,6 +96,9 @@ public class BlockListener implements Listener {
                                 return;
 
                             if (!manager.isBulkyBlock(currentChest))
+                                return;
+
+                            if (manager.isLocked(currentChest))
                                 return;
 
                             ChestContainer currentContainer = manager.getOrCreate(currentChestState, null);
