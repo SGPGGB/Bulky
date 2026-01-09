@@ -3,6 +3,7 @@ package de.sgpggb.bulky.models;
 import de.sgpggb.bulky.Bulky;
 import de.sgpggb.bulky.guis.ChestGUI;
 import de.sgpggb.bulky.misc.Constants;
+import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.bulky.misc.Utils;
 import de.sgpggb.pluginutilitieslib.logging.Logging;
 import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
@@ -163,7 +164,7 @@ public class ChestContainer {
     public void doUpgrade(Player p, int bulk) {
         bulk = canUpgrade(bulk);
         if (bulk == 0) {
-            p.sendMessage(ChatUtil.mm("You cant upgrade this chest!"));
+            p.sendMessage(Messages.get(Messages.MSG.ERROR_UPGRADE_NO_UPGRADES_LEFT));
             return;
         }
 
@@ -171,7 +172,7 @@ public class ChestContainer {
 
         //check money
         if (!EconomyAPI.hasEnough(p.getUniqueId(), totalPrice)) {
-            p.sendMessage(ChatUtil.mm("Missing money to upgrade!"));
+            p.sendMessage(Messages.get(Messages.MSG.ERROR_UPGRADE_NO_MONEY));
             return;
         }
 
@@ -192,14 +193,14 @@ public class ChestContainer {
 
                 @Override
                 protected void onFailure() {
-                    p.sendMessage(ChatUtil.mm("Something went wrong while purchasing the upgrade"));
+                    p.sendMessage(Messages.get(Messages.MSG.ERROR_UPGRADE_UNKNOWN));
 
                     Utils.playCancelSound(p);
                 }
 
                 @Override
                 protected void onError() {
-                    p.sendMessage(ChatUtil.mm("Something went wrong while purchasing the upgrade"));
+                    p.sendMessage(Messages.get(Messages.MSG.ERROR_UPGRADE_UNKNOWN));
 
                     Utils.playCancelSound(p);
                 }

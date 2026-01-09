@@ -2,12 +2,12 @@ package de.sgpggb.bulky.guis;
 
 import de.sgpggb.bulky.Bulky;
 import de.sgpggb.bulky.misc.ItemBuilder;
+import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.bulky.models.Manager;
 import de.sgpggb.bulky.misc.Utils;
 import de.sgpggb.bulky.models.ChestContainer;
 import de.sgpggb.pluginutilitieslib.logging.Logging;
 import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
-import de.sgpggb.pluginutilitieslib.utils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -172,7 +172,7 @@ public class ChestGUI extends CustomGUI {
             }
 
             if (container.getAmount() != 0) {
-                player.sendMessage(ChatUtil.mm(prefix + "<red>Cant change material, when chest not empty!"));
+                player.sendMessage(Messages.get(Messages.MSG.ERROR_CHEST_NOT_EMPTY));
                 playCancelSound();
                 return;
             }
@@ -180,7 +180,8 @@ public class ChestGUI extends CustomGUI {
             ItemStack is = e.getCursor().clone();
             is.setAmount(1);
             container.setItemStack(is);
-            player.sendMessage(ChatUtil.mm(prefix + "<green>Changed material to " + container.getItemStack().getType().name()));
+            player.sendMessage(Messages.get(Messages.MSG.CHEST_MATERIAL_CHANGED,
+                new Messages.Placeholder("<material>", container.getItemStack().getType().name())));
             playClickSound();
             initInventory();
         });
@@ -207,7 +208,7 @@ public class ChestGUI extends CustomGUI {
 
             int amount = container.canUpgrade(this.bulkOption);
             if (amount == 0) {
-                player.sendMessage(ChatUtil.mm(prefix + "<red>No upgrades left"));
+                player.sendMessage(Messages.get(Messages.MSG.ERROR_UPGRADE_NO_UPGRADES_LEFT));
                 playCancelSound();
                 return;
             }

@@ -1,11 +1,11 @@
 package de.sgpggb.bulky.listeners;
 
 import de.sgpggb.bulky.Bulky;
+import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.bulky.models.Manager;
 import de.sgpggb.bulky.models.ChestContainer;
 import de.sgpggb.bulky.guis.ChestGUI;
 import de.sgpggb.pluginutilitieslib.logging.Logging;
-import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
 import de.sgpggb.pluginutilitieslib.utils.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -13,7 +13,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -66,13 +65,13 @@ public class PlayerListener implements Listener {
 
             if (placingBulkyChest) {
                 e.setCancelled(true);
-                e.getPlayer().sendMessage(ChatUtil.mm(prefix + "<red>BulkyChests may not connect to other chests!"));
+                e.getPlayer().sendMessage(Messages.get(Messages.MSG.ERROR_BULKY_CONNECT));
                 return;
             }
 
             if (neighborIsBulky) {
                 e.setCancelled(true);
-                e.getPlayer().sendMessage(ChatUtil.mm(prefix + "<red>You can't place a chest next to a BulkyChest!"));
+                e.getPlayer().sendMessage(Messages.get(Messages.MSG.ERROR_CHEST_NEXT_TO_BULKY));
                 return;
             }
         }
@@ -91,13 +90,13 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         ChestContainer chestContainer = manager.getOrCreate(chest, player);
         if (!chestContainer.validate()) {
-            player.sendMessage(ChatUtil.mm(prefix + "<red>Something went wrong while breaking the chest!"));
+            player.sendMessage(Messages.get(Messages.MSG.ERROR_BREAK_UNKNOWN));
             event.setCancelled(true);
             return;
         }
 
         if (manager.isLocked(chest)) {
-            player.sendMessage(ChatUtil.mm(prefix + "<red>This chest is currently locked!"));
+            player.sendMessage(Messages.get(Messages.MSG.ERROR_BREAK_LOCKED));
             event.setCancelled(true);
             return;
         }
@@ -106,7 +105,7 @@ public class PlayerListener implements Listener {
         int upgrades = chestContainer.getUpgrades();
 
         if (amount != 0) {
-            player.sendMessage(ChatUtil.mm(prefix + "<red>Your Bulky is not empty!"));
+            player.sendMessage(Messages.get(Messages.MSG.ERROR_BREAK_NOT_EMPTY));
             event.setCancelled(true);
             return;
         }
@@ -150,12 +149,12 @@ public class PlayerListener implements Listener {
     private void open(Player player, Chest chest) {
         ChestContainer chestContainer = manager.getOrCreate(chest, player);
         if (!chestContainer.validate()) {
-            player.sendMessage(ChatUtil.mm(prefix + "<red>Something went wrong while opening the chest!"));
+            player.sendMessage(Messages.get(Messages.MSG.ERROR_OPEN_UNKNOWN));
             return;
         }
 
         if (manager.isLocked(chest)) {
-            player.sendMessage(ChatUtil.mm(prefix + "<red>This chest is already in use!"));
+            player.sendMessage(Messages.get(Messages.MSG.ERROR_OPEN_LOCKED));
             player.playSound(player, Sound.BLOCK_CHEST_LOCKED, 1, 1);
             return;
         }

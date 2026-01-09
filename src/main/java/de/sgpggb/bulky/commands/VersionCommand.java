@@ -1,9 +1,9 @@
 package de.sgpggb.bulky.commands;
 
 import de.sgpggb.bulky.Bulky;
+import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.bulky.misc.Permissions;
 import de.sgpggb.pluginutilitieslib.cmd.CustomCommand;
-import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
 import de.sgpggb.pluginutilitieslib.utils.CommandUtils;
 import org.bukkit.command.CommandSender;
 
@@ -19,7 +19,8 @@ public class VersionCommand extends CustomCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        sender.sendMessage(ChatUtil.mm(Bulky.getInstance().getPrefix() + "<green>Version: " + Bulky.getInstance().getPluginMeta().getVersion()));
+        sender.sendMessage(Messages.get(Messages.MSG.COMMANDS_VERSION,
+            new Messages.Placeholder("<version>", Bulky.getInstance().getPluginMeta().getVersion())));
     }
 
     @Override

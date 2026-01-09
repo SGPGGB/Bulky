@@ -1,10 +1,10 @@
 package de.sgpggb.bulky.commands;
 
 import de.sgpggb.bulky.Bulky;
+import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.bulky.misc.Permissions;
 import de.sgpggb.bulky.models.ChestContainer;
 import de.sgpggb.pluginutilitieslib.cmd.CustomCommand;
-import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
 import de.sgpggb.pluginutilitieslib.utils.CommandUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -23,11 +23,11 @@ public class GiveCommand extends CustomCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatUtil.mm("<red>Ingame only!"));
+            sender.sendMessage(Messages.get(Messages.MSG.ERROR_INGAME_ONLY));
             return;
         }
         player.give(ChestContainer.createBulky(new ItemStack(Material.STONE)));
-        sender.sendMessage(ChatUtil.mm("<green>You received one BulkyChest!"));
+        sender.sendMessage(Messages.get(Messages.MSG.COMMANDS_GIVE));
     }
 
     @Override

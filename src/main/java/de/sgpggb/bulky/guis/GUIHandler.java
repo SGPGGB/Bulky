@@ -1,5 +1,6 @@
 package de.sgpggb.bulky.guis;
 
+import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.pluginutilitieslib.logging.Logging;
 import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
 import org.bukkit.Bukkit;
@@ -45,7 +46,7 @@ public class GUIHandler implements Listener {
                 continue;
 
             closeGUI(player);
-            player.sendMessage(ChatUtil.mm("<red>Deine Kiste wurde aufgrund eines Pluginreloads geschlossen!"));
+            player.sendMessage(Messages.get(Messages.MSG.ERROR_CHEST_CLOSED));
         }
     }
 

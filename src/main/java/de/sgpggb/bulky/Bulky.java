@@ -7,6 +7,7 @@ import de.sgpggb.bulky.listeners.BlockListener;
 import de.sgpggb.bulky.listeners.CraftListener;
 import de.sgpggb.bulky.listeners.PlayerListener;
 import de.sgpggb.bulky.guis.GUIHandler;
+import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.bulky.models.Manager;
 import de.sgpggb.pluginutilitieslib.CustomJavaPlugin;
 import de.sgpggb.pluginutilitieslib.cmd.CustomCommandHandler;
@@ -116,6 +117,8 @@ public final class Bulky extends CustomJavaPlugin {
         c.addDefault("upgrades.gui.no.texture", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRjZTU4MjI4MmRiYTE5NTNlODcxOGViMGE3MmU0Nzc0MzE2ZTg4ZGEzMjE1MDY4ZjY5MWFhNGNhMzQyYTcxZiJ9fX0=");
         c.addDefault("upgrades.gui.no.name", "<yellow>Deny");
         c.addDefault("upgrades.gui.no.lore", List.of("<gray>Click to return to chest."));
+
+        Messages.init(c);
 
         c.addDefault("options.numberFormat", "short");
 
