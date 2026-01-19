@@ -38,7 +38,7 @@ public class BulkyAPI {
     public static double getFreeSpace(Chest chest) {
         if (!isBulkyChest(chest))
             return 0;
-        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation(), null);
+        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return 0;
         return container.getMaxAmount() - container.getAmount();
@@ -54,7 +54,7 @@ public class BulkyAPI {
     public static double getStoredAmount(Chest chest) {
         if (!isBulkyChest(chest))
             return 0;
-        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation(), null);
+        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return 0;
         return container.getAmount();
@@ -70,7 +70,7 @@ public class BulkyAPI {
     public static double getMaxAmount(Chest chest) {
         if (!isBulkyChest(chest))
             return 0;
-        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation(), null);
+        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return 0;
         return container.getMaxAmount();
@@ -92,7 +92,7 @@ public class BulkyAPI {
     public static int addAmount(Chest chest, ItemStack itemStack, int amount) {
         if (!isBulkyChest(chest))
             return 0;
-        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation(), null);
+        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return 0;
         if (Bulky.getInstance().getManager().isLocked(chest))
@@ -117,7 +117,7 @@ public class BulkyAPI {
     public static int removeAmount(Chest chest, ItemStack itemStack, int amount) {
         if (!isBulkyChest(chest))
             return 0;
-        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation(), null);
+        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return 0;
         if (Utils.isSameItem(itemStack, container.getItemStack()))
@@ -135,7 +135,7 @@ public class BulkyAPI {
     public static boolean isSameItem(Chest chest, ItemStack itemStack) {
         if (!isBulkyChest(chest))
             return false;
-        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation(), null);
+        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return false;
         return Utils.isSameItem(itemStack, container.getItemStack());
@@ -150,7 +150,7 @@ public class BulkyAPI {
     public static ItemStack getStoredItem(Chest chest) {
         if (!isBulkyChest(chest))
             return null;
-        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation(), null);
+        ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return null;
         return container.getItemStack();

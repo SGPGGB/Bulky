@@ -30,15 +30,13 @@ public class ChestContainer {
     ItemStack itemStack;
 
     //runtime variables
-    //TODO: handle player correctly -> remove on close, add on open!
     Player player;
 
     /**
      *
      * @param chest
-     * @param player
      */
-    public ChestContainer(Chest chest, Player player) {
+    public ChestContainer(Chest chest) {
         this.chest = chest;
         this.amount = chest.getPersistentDataContainer().get(Constants.bulkyChestStorageAmount, PersistentDataType.LONG);
         this.upgrades = chest.getPersistentDataContainer().get(Constants.bulkyChestStorageUpgrades, PersistentDataType.INTEGER);
@@ -58,7 +56,14 @@ public class ChestContainer {
             this.itemStack = new ItemStack(Material.STONE);
 
         log.debug("created chestcontainer at " + chest.getLocation());
+    }
+
+    public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 
     public boolean isItemOk(ItemStack is) {
@@ -194,7 +199,7 @@ public class ChestContainer {
                     log.info(p.getName() + " purchased #" + amount + " upgrades for " + totalPrice);
 
                     //reopen the gui
-                    Bulky.getInstance().getGuiHandler().openGUI(new ChestGUI(player, manager.getOrCreate(chest, p)));
+                    Bulky.getInstance().getGuiHandler().openGUI(new ChestGUI(player, manager.getOrCreate(chest)));
                 }
 
                 @Override

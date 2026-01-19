@@ -34,6 +34,10 @@ public class Manager {
         this.maxUpgrades = config.getInt("upgrades.maxUpgrades");
         this.maxCapacity = config.getLong("upgrades.maxCapacity");
         this.bulkOptions = config.getIntegerList("upgrades.bulkOptions");
+
+        Bulky.getInstance().getGuiHandler().closeAll();
+        containers.clear();
+        lockedChests.clear();
     }
 
     /*
@@ -178,27 +182,25 @@ public class Manager {
     /**
      * returns or creates a chest container object
      * @param chest the chest
-     * @param player the player
      * @return the chest container object
      */
-    public ChestContainer getOrCreate(Chest chest, Player player) {
-        return getOrCreate(chest.getLocation(), player);
+    public ChestContainer getOrCreate(Chest chest) {
+        return getOrCreate(chest.getLocation());
     }
 
     /**
      * returns or creates a chest container object
      * @param location the location of the chest
-     * @param player the player
      * @return the chest container object
      */
-    public ChestContainer getOrCreate(Location location, Player player) {
+    public ChestContainer getOrCreate(Location location) {
         if (getContainer(location) != null)
             return getContainer(location);
 
         if (!(location.getBlock().getState() instanceof Chest chest))
             return null;
 
-        ChestContainer container = new ChestContainer(chest, player);
+        ChestContainer container = new ChestContainer(chest);
         addContainer(container);
         return container;
     }

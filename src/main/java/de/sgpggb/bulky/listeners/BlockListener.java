@@ -58,7 +58,7 @@ public class BlockListener implements Listener {
         if (moving == null || moving.getType() == Material.AIR)
             return;
 
-        ChestContainer container = manager.getOrCreate(chestState, null);
+        ChestContainer container = manager.getOrCreate(chestState);
 
         if (container == null || !container.isItemOk(moving))
             return;
@@ -100,7 +100,7 @@ public class BlockListener implements Listener {
                             if (manager.isLocked(currentChest))
                                 return;
 
-                            ChestContainer currentContainer = manager.getOrCreate(currentChestState, null);
+                            ChestContainer currentContainer = manager.getOrCreate(currentChestState);
 
                             if (currentContainer == null || !currentContainer.validate())
                                 return;

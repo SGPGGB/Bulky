@@ -31,7 +31,6 @@ public class ChestGUI extends CustomGUI {
         super(player, Bulky.getInstance().getConfig().getString("chest.gui.title"), 54);
         this.container = container;
         initInventory();
-        manager.lock(container.getChest());
     }
 
     private final ItemStack moveOneStack = new ItemBuilder().playerHead(config.getString("chest.gui.moveOneStack.texture"))
@@ -221,11 +220,14 @@ public class ChestGUI extends CustomGUI {
     public void onInventoryClose(InventoryCloseEvent event) {
         manager.unlock(container.getChest());
         container.getChest().close();
+        container.setPlayer(null);
     }
 
     @Override
     public void onInventoryOpen(InventoryOpenEvent event) {
+        manager.lock(container.getChest());
         container.getChest().open();
+        container.setPlayer((Player) event.getPlayer());
     }
 
     /**

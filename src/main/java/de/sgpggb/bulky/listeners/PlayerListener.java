@@ -88,7 +88,7 @@ public class PlayerListener implements Listener {
             return;
 
         Player player = event.getPlayer();
-        ChestContainer chestContainer = manager.getOrCreate(chest, player);
+        ChestContainer chestContainer = manager.getOrCreate(chest);
         if (chestContainer == null || !chestContainer.validate()) {
             player.sendMessage(Messages.get(Messages.MSG.ERROR_BREAK_UNKNOWN));
             event.setCancelled(true);
@@ -115,6 +115,7 @@ public class PlayerListener implements Listener {
 
         event.setDropItems(false);
         block.getWorld().dropItemNaturally(block.getLocation(), ChestContainer.createBulky(chestContainer.getItemStack(), amount, upgrades));
+        manager.removeContainer(chestContainer);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -147,7 +148,7 @@ public class PlayerListener implements Listener {
     }
 
     private void open(Player player, Chest chest) {
-        ChestContainer chestContainer = manager.getOrCreate(chest, player);
+        ChestContainer chestContainer = manager.getOrCreate(chest);
         if (!chestContainer.validate()) {
             player.sendMessage(Messages.get(Messages.MSG.ERROR_OPEN_UNKNOWN));
             return;
