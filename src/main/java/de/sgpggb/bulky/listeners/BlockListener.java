@@ -79,8 +79,7 @@ public class BlockListener implements Listener {
 
                 //delay 1 tick
                 Bukkit.getScheduler().scheduleSyncDelayedTask(
-                    Bulky.getInstance(),
-                    () -> {
+                    Bulky.getInstance(), () -> {
                         try {
                             Inventory currentSource = event.getSource();
                             Inventory currentDest = event.getDestination();

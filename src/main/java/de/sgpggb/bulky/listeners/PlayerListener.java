@@ -89,7 +89,7 @@ public class PlayerListener implements Listener {
 
         Player player = event.getPlayer();
         ChestContainer chestContainer = manager.getOrCreate(chest, player);
-        if (!chestContainer.validate()) {
+        if (chestContainer == null || !chestContainer.validate()) {
             player.sendMessage(Messages.get(Messages.MSG.ERROR_BREAK_UNKNOWN));
             event.setCancelled(true);
             return;

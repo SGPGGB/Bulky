@@ -30,8 +30,14 @@ public class ChestContainer {
     ItemStack itemStack;
 
     //runtime variables
+    //TODO: handle player correctly -> remove on close, add on open!
     Player player;
 
+    /**
+     *
+     * @param chest
+     * @param player
+     */
     public ChestContainer(Chest chest, Player player) {
         this.chest = chest;
         this.amount = chest.getPersistentDataContainer().get(Constants.bulkyChestStorageAmount, PersistentDataType.LONG);
