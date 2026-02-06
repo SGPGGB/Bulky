@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 public enum Permissions {
 
     USER("bulky.user"),
+    CRAFTING("bulky.crafting"),
     MOD("bulky.mod"),
     ADMIN("bulky.admin"),
     ;

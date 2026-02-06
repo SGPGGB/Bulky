@@ -33,10 +33,11 @@ dependencies {
     compileOnly("de.sgpggb:PluginUtilitiesLib:5.17")
     compileOnly("de.sgpggb:SGPGGBEconomySpigot:2.16")
     compileOnly("de.sgpggb:PluginChannel:1.7")
+    compileOnly("de.sgpggb:CashNuggets:0.18")
 }
 
 group = "de.sgpggb"
-version = "1.4"
+version = "1.5"
 var mcapi = "1.21.10"
 description "Bulky"
 
