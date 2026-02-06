@@ -2,6 +2,7 @@ package de.sgpggb.bulky.guis;
 
 import de.sgpggb.bulky.Bulky;
 import de.sgpggb.bulky.misc.ItemBuilder;
+import de.sgpggb.bulky.misc.Utils;
 import de.sgpggb.bulky.models.ChestContainer;
 import de.sgpggb.bulky.models.Manager;
 import de.sgpggb.pluginutilitieslib.logging.Logging;
@@ -25,7 +26,7 @@ public class ConfirmGUI extends CustomGUI {
     int cost;
 
     public ConfirmGUI(Player player, ChestContainer container, int bulk, int cost) {
-        super(player, "Purchase upgrades.", 6 * 9);
+        super(player, Bulky.getInstance().getConfig().getString("upgrades.gui.title"), 6 * 9);
         this.container = container;
         this.bulk = bulk;
         this.cost = cost;
@@ -37,12 +38,20 @@ public class ConfirmGUI extends CustomGUI {
         //item with text
         addGUIItem(new ItemBuilder().playerHead(config.getString("upgrades.gui.info.texture"))
                 .displayName(ChatUtil.mm(config.getString("upgrades.gui.info.name")
-                    .replace("<upgrades>", "" + bulk)
-                    .replace("<money>", EconomyAPI.formatAmount(cost))))
+                    .replace("<bulk>", "" + bulk)
+                    .replace("<upgrades>", "" + container.getUpgrades())
+                    .replace("<money>", EconomyAPI.formatAmount(cost))
+                    .replace("<singlechest>", Utils.amountToChest(bulk * manager.getAddCapacity()))
+                    .replace("<doublechest>", Utils.amountToDoubleChest(bulk * manager.getAddCapacity()))
+                ))
                 .lore(config.getStringList("upgrades.gui.info.lore").stream().map(l ->
                     ChatUtil.mm(l
-                        .replace("<upgrades>", "" + bulk)
-                        .replace("<money>", EconomyAPI.formatAmount(cost))))
+                        .replace("<bulk>", "" + bulk)
+                        .replace("<upgrades>", "" + container.getUpgrades())
+                        .replace("<money>", EconomyAPI.formatAmount(cost))
+                        .replace("<singlechest>", Utils.amountToChest(bulk * manager.getAddCapacity()))
+                        .replace("<doublechest>", Utils.amountToDoubleChest(bulk * manager.getAddCapacity()))
+                    ))
                     .toList())
                 .build(), 13,
             e -> {

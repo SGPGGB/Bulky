@@ -30,6 +30,7 @@ public class Messages {
     public enum MSG {
         ERROR_INGAME_ONLY("messages.error.ingame_only", "<red>Ingame only!"),
         ERROR_CHEST_CLOSED("messages.error.chest_closed", "<red>Chest was forced to close by a reload!"),
+        ERROR_NO_PERMISSION("messages.error.no_permission", "<red>You do not have permission to do this!"),
 
         COMMANDS_GIVE("messages.commands.give", "<green>You received one BulkyChest!"),
         COMMANDS_RELOAD("messages.commands.reload", "<green>Plugin reloaded!"),
@@ -43,11 +44,13 @@ public class Messages {
         ERROR_BREAK_NOT_EMPTY("messages.chest.break_not_empty", "<red>Your Bulky is not empty!"),
         ERROR_OPEN_UNKNOWN("messages.chest.open_unknown", "<red>Something went wrong while opening the chest!"),
         ERROR_OPEN_LOCKED("messages.chest.open_locked", "<red>This chest is already in use!"),
-        ERROR_UPGRADE_NO_MONEY("messages.chest.upgrade.no_money", "<red>You don't have enough money!"),
+        ERROR_UPGRADE_NO_MONEY("messages.chest.upgrade_no_money", "<red>You don't have enough money!"),
         ERROR_UPGRADE_NO_UPGRADES_LEFT("messages.chest.cant_upgrade", "<red>You cant upgrade this chest!"),
         ERROR_UPGRADE_UNKNOWN("messages.chest.upgrade_unknown", "<red>Something went wrong while upgrading the chest!"),
+        ERROR_MATERIAL_NOT_ALLOWED("messages.chest.material_not_allowed", "<red>The material <material> <red>is not allowed!"),
 
-        CHEST_MATERIAL_CHANGED("messages.chest.material_changed", "<red>Changed material to <material>!"),
+        CHEST_UPGRADES_PURCHASED("messages.chest.upgrade_purchased", "<green>Successfully purchased <upgrades> upgrades for <money> BM!"),
+        CHEST_MATERIAL_CHANGED("messages.chest.material_changed", "<red>Changed material to <material><red>!"),
         ;
 
         String config;

@@ -11,6 +11,8 @@ import de.sgpggb.bulky.misc.Messages;
 import de.sgpggb.bulky.models.Manager;
 import de.sgpggb.pluginutilitieslib.CustomJavaPlugin;
 import de.sgpggb.pluginutilitieslib.cmd.CustomCommandHandler;
+import de.sgpggb.pluginutilitieslib.utils.Util;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public final class Bulky extends CustomJavaPlugin {
     Manager manager;
     GUIHandler guiHandler;
     CustomCommandHandler cmdHandler;
+    CraftListener craftListener;
     String prefix = "<white>[<red>B<gray>y<white>] ";
 
     public static Bulky getInstance() {
@@ -43,14 +46,17 @@ public final class Bulky extends CustomJavaPlugin {
 
         prefix = getConfig().getString("prefix");
 
+        guiHandler = new GUIHandler(getLog(), this);
+
         manager = new Manager();
         manager.reload();
 
-        guiHandler = new GUIHandler(getLog(), this);
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
-        getServer().getPluginManager().registerEvents(new CraftListener(), this);
+        craftListener = new CraftListener();
+        craftListener.reload();
+        getServer().getPluginManager().registerEvents(craftListener, this);
 
         cmdHandler = new CustomCommandHandler("bulky", getLog(), getPrefix());
         cmdHandler.registerCmd(new VersionCommand());
@@ -67,6 +73,8 @@ public final class Bulky extends CustomJavaPlugin {
 
         c.addDefault("chest.name", "<red>Bulky");
         c.addDefault("chest.price", 10000);
+        c.addDefault("chest.blacklist", Util.list(Material.AIR.name()));
+        c.addDefault("chest.craftPrice", 10000);
 
         c.addDefault("chest.gui.title", "Bulky");
 
@@ -107,14 +115,14 @@ public final class Bulky extends CustomJavaPlugin {
         c.addDefault("upgrades.gui.title", "Upgrades");
         
         c.addDefault("upgrades.gui.info.texture", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTEyNDNmN2U3MzhhMTI4MTc2YzUxNzUwMjY1MjRmMGU3NjhkZGU1MzBkZWRjMDU0Nzk3NDJjY2JiZTg5N2U1OCJ9fX0=");
-        c.addDefault("upgrades.gui.info.name", "<green>Do you want to purchase <upgrades> upgrades!");
+        c.addDefault("upgrades.gui.info.name", "<green>Do you want to purchase <bulk> upgrades!");
         c.addDefault("upgrades.gui.info.lore", List.of("<gray>Click accept to buy it", "It will cost you <money> money!"));
 
-        c.addDefault("upgrades.gui.yes.texture", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzZiYWNjMmRhNjk4OGIzNGUyYTI1MmYxZDFmODRmZTQ3MDNmZDhhOWRkMjFkMGU1NWU1YzJkMWI0NTE0NzE3OCJ9fX0=");
+        c.addDefault("upgrades.gui.yes.texture", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGE5OTM0MmUyYzczYTlmMzgyMjYyOGU3OTY0ODgyMzRmMjU4NDQ2ZjVhMmQ0ZDU5ZGRlNGFhODdkYjk4In19fQ==");
         c.addDefault("upgrades.gui.yes.name", "<yellow>Accept");
         c.addDefault("upgrades.gui.yes.lore", List.of("<gray>Click to buy <upgrades> upgrades for <money> money!"));
 
-        c.addDefault("upgrades.gui.no.texture", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRjZTU4MjI4MmRiYTE5NTNlODcxOGViMGE3MmU0Nzc0MzE2ZTg4ZGEzMjE1MDY4ZjY5MWFhNGNhMzQyYTcxZiJ9fX0=");
+        c.addDefault("upgrades.gui.no.texture", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTZjNjBkYTQxNGJmMDM3MTU5YzhiZThkMDlhOGVjYjkxOWJmODlhMWEyMTUwMWI1YjJlYTc1OTYzOTE4YjdiIn19fQ==");
         c.addDefault("upgrades.gui.no.name", "<yellow>Deny");
         c.addDefault("upgrades.gui.no.lore", List.of("<gray>Click to return to chest."));
 
@@ -132,11 +140,11 @@ public final class Bulky extends CustomJavaPlugin {
     }
 
     public void reload() {
-        reloadConfig();
-        super.initLib();
+        super.reloadConfig();
         prefix = getConfig().getString("prefix");
         manager.reload();
         guiHandler.closeAll();
+        craftListener.reload();
     }
 
     public String getPrefix() {

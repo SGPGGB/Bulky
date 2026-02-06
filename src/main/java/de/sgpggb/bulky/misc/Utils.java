@@ -1,6 +1,7 @@
 package de.sgpggb.bulky.misc;
 
 import de.sgpggb.bulky.Bulky;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -8,9 +9,47 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.NumberFormat;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Utils {
+
+    private static final double ITEMS_PER_CHEST = 1728.0;
+
+    public static String amountToDoubleChest(double amount) {
+        return String.format("%.2f", amount / (ITEMS_PER_CHEST * 2));
+    }
+
+    public static String amountToChest(double amount) {
+        return String.format("%.2f", amount / ITEMS_PER_CHEST);
+    }
+
+    /**
+     * Checks whether a material is allowed based on the config blacklist
+     * @param material the material to check
+     * @return true if the material is allowed, false if it is blacklisted (or null)
+     */
+    public static boolean isMaterialAllowed(Material material) {
+        if (material == null)
+            return false;
+
+        List<String> raw = Bulky.getInstance().getConfig().getStringList("chest.blacklist");
+        if (raw == null || raw.isEmpty())
+            return true;
+
+        Set<Material> blacklist = new HashSet<>();
+        for (String s : raw) {
+            if (s == null)
+                continue;
+            Material m = Material.matchMaterial(s.trim());
+            if (m != null)
+                blacklist.add(m);
+        }
+
+        return !blacklist.contains(material);
+    }
 
     /**
      * returns the amount of items which fits in the players inventory

@@ -37,7 +37,7 @@ dependencies {
 }
 
 group = "de.sgpggb"
-version = "1.5"
+version = "1.6"
 var mcapi = "1.21.10"
 description "Bulky"
 

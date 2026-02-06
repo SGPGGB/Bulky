@@ -71,31 +71,54 @@ public class ChestGUI extends CustomGUI {
                 ChatUtil.mm(config.getString("chest.gui.informationButton.name")
                     .replace("<stored>", Utils.formatNumber(container.getAmount()))
                     .replace("<max>", Utils.formatNumber(container.getMaxAmount()))
-                    .replace("<percent>", percentFormatted)))
+                    .replace("<percent>", percentFormatted)
+                    .replace("<singlechest>", Utils.amountToChest(container.getAmount()))
+                    .replace("<doublechest>", Utils.amountToDoubleChest(container.getAmount()))
+                    .replace("<singlechestmax>", Utils.amountToChest(container.getMaxAmount()))
+                    .replace("<doublechestmax>", Utils.amountToDoubleChest(container.getMaxAmount()))
+                ))
             .lore(config.getStringList("chest.gui.informationButton.lore").stream().map(e ->
                 ChatUtil.mm(e
                     .replace("<stored>", Utils.formatNumber(container.getAmount()))
                     .replace("<max>", Utils.formatNumber(container.getMaxAmount()))
-                    .replace("<percent>", percentFormatted)))
+                    .replace("<percent>", percentFormatted)
+                    .replace("<singlechest>", Utils.amountToChest(container.getAmount()))
+                    .replace("<doublechest>", Utils.amountToDoubleChest(container.getAmount()))
+                    .replace("<singlechestmax>", Utils.amountToChest(container.getMaxAmount()))
+                    .replace("<doublechestmax>", Utils.amountToDoubleChest(container.getMaxAmount()))
+                ))
                 .toList())
             .build();
 
         ItemStack changeMaterialButton = new ItemBuilder(container.getItemStack().clone())
             .displayName(ChatUtil.mm(config.getString("chest.gui.changeMaterialButton.name")))
             .lore(config.getStringList("chest.gui.changeMaterialButton.lore").stream().map(ChatUtil::mm).toList())
+            .addLore(container.getItemStack().clone().displayName())
             .build();
+
+        //add lore if it's not null
+        if (container.getItemStack().lore() != null) {
+            changeMaterialButton = new ItemBuilder(changeMaterialButton)
+                .addLore(container.getItemStack().clone().lore())
+                .build();
+        }
 
         ItemStack upgradeButton = new ItemBuilder().playerHead(config.getString("chest.gui.upgradeButton.texture"))
             .displayName(
                 ChatUtil.mm(config.getString("chest.gui.upgradeButton.name")
                     .replace("<bulk>", "" + bulkOption)
                     .replace("<upgrades>", "" + container.getUpgrades())
-                    .replace("<maxupgrades>", (manager.getMaxUpgrades() == -1 ? "∞" : "" + manager.getMaxUpgrades()))))
+                    .replace("<maxupgrades>", (manager.getMaxUpgrades() == -1 ? "∞" : "" + manager.getMaxUpgrades()))
+                    .replace("<singlechest>", Utils.amountToChest(bulkOption * manager.getAddCapacity()))
+                    .replace("<doublechest>", Utils.amountToDoubleChest(bulkOption * manager.getAddCapacity()))
+                ))
             .lore(config.getStringList("chest.gui.upgradeButton.lore").stream().map(l ->
                 ChatUtil.mm(l
                     .replace("<bulk>", "" + bulkOption)
                     .replace("<upgrades>", "" + container.getUpgrades())
-                    .replace("<maxupgrades>", (manager.getMaxUpgrades() == -1 ? "∞" : "" + manager.getMaxUpgrades()))))
+                    .replace("<maxupgrades>", (manager.getMaxUpgrades() == -1 ? "∞" : "" + manager.getMaxUpgrades()))
+                    .replace("<singlechest>", Utils.amountToChest(bulkOption * manager.getAddCapacity()))
+                    .replace("<doublechest>", Utils.amountToDoubleChest(bulkOption * manager.getAddCapacity()))))
                 .toList())
             .build();
 
@@ -178,9 +201,17 @@ public class ChestGUI extends CustomGUI {
 
             ItemStack is = e.getCursor().clone();
             is.setAmount(1);
+
+            if (!Utils.isMaterialAllowed(is.getType())) {
+                player.sendMessage(Messages.get(Messages.MSG.ERROR_MATERIAL_NOT_ALLOWED,
+                    new Messages.Placeholder("<material>", ChatUtil.mm(is.displayName()))));
+                playCancelSound();
+                return;
+            }
+
             container.setItemStack(is);
             player.sendMessage(Messages.get(Messages.MSG.CHEST_MATERIAL_CHANGED,
-                new Messages.Placeholder("<material>", container.getItemStack().getType().name())));
+                new Messages.Placeholder("<material>", ChatUtil.mm(container.getItemStack().clone().displayName()))));
             playClickSound();
             initInventory();
         });

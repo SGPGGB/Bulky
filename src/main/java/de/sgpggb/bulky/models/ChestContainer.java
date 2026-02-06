@@ -122,7 +122,12 @@ public class ChestContainer {
         ItemStack chest = new ItemStack(Material.CHEST);
         ItemMeta meta = chest.getItemMeta();
         meta.displayName(ChatUtil.mm(Bulky.getInstance().getConfig().getString("chest.name")));
-        meta.lore(List.of(ChatUtil.mm(""), ChatUtil.mm("")));
+        meta.lore(
+            List.of(
+                ChatUtil.mm("Itemtyp: " + is.getType().name()),
+                ChatUtil.mm("Upgrades: " + upgrades)
+            )
+        );
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
         setPDC(pdc, is, amount, upgrades);
         chest.setItemMeta(meta);
@@ -189,7 +194,7 @@ public class ChestContainer {
 
         //remove money
         final int amount = bulk;
-        EconomyAPI.take(p.getUniqueId(), totalPrice, "", "", new EconomyAPI.EconomyFuture() {
+        EconomyAPI.take(p.getUniqueId(), totalPrice, "Bulky", amount + "x Bulky Upgrades", new EconomyAPI.EconomyFuture() {
                 @Override
                 protected void onSuccess() {
                     setUpgrades(getUpgrades() + amount);
@@ -197,6 +202,10 @@ public class ChestContainer {
                     Utils.playLevelUpSound(p);
 
                     log.info(p.getName() + " purchased #" + amount + " upgrades for " + totalPrice);
+
+                    player.sendMessage(Messages.get(Messages.MSG.CHEST_UPGRADES_PURCHASED,
+                        new Messages.Placeholder("<upgrades>", "" + amount),
+                        new Messages.Placeholder("<money>", "" + totalPrice)));
 
                     //reopen the gui
                     Bulky.getInstance().getGuiHandler().openGUI(new ChestGUI(player, manager.getOrCreate(chest)));

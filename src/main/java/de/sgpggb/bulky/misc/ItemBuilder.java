@@ -218,6 +218,17 @@ public final class ItemBuilder {
     }
 
     /**
+     * Add lore lines.
+     */
+    public ItemBuilder addLore(List<Component> lines) {
+        Objects.requireNonNull(lines, "lines must not be null.");
+        for (Component line : lines) {
+            this.lore.add(Objects.requireNonNull(line, "lore line must not be null."));
+        }
+        return this;
+    }
+
+    /**
      * Convenience: add lore lines from legacy strings (e.g. "&7Line").
      */
     public ItemBuilder addLore(String... legacyLines) {
