@@ -97,7 +97,7 @@ public class BulkyAPI {
             return 0;
         if (Bulky.getInstance().getManager().isLocked(chest))
             return 0;
-        if (Utils.isSameItem(itemStack, container.getItemStack()))
+        if (!Utils.isSameItem(itemStack, container.getItemStack()))
             return 0;
         return container.addItems(amount);
     }
@@ -120,7 +120,9 @@ public class BulkyAPI {
         ChestContainer container = Bulky.getInstance().getManager().getOrCreate(chest.getLocation());
         if (container == null)
             return 0;
-        if (Utils.isSameItem(itemStack, container.getItemStack()))
+        if (Bulky.getInstance().getManager().isLocked(chest))
+            return 0;
+        if (!Utils.isSameItem(itemStack, container.getItemStack()))
             return 0;
         return container.removeItems(amount, false);
     }
