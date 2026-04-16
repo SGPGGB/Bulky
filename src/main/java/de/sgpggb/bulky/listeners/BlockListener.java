@@ -9,10 +9,12 @@ import de.sgpggb.pluginutilitieslib.utils.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Container;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -30,8 +32,10 @@ public class BlockListener implements Listener {
     Manager manager = Bulky.getInstance().getManager();
 
     private final ConcurrentHashMap<Location, Object> lockMap = new ConcurrentHashMap<>();
+    NamespacedKey premiumHopperKey = NamespacedKey.fromString("servermanager:premiumhopper");
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.NORMAL)
     public void onItemMoveEvent(InventoryMoveItemEvent event) {
 
         Inventory destInv = event.getDestination();
@@ -66,6 +70,15 @@ public class BlockListener implements Listener {
         Inventory sourceInv = event.getSource();
         if (sourceInv == null || sourceInv.getLocation() == null)
             return;
+
+        InventoryHolder sourceHolder = sourceInv.getHolder();
+
+        boolean premiumHopper;
+        if (sourceHolder instanceof Container sourceContainer) {
+            premiumHopper = premiumHopperKey != null && sourceContainer.getPersistentDataContainer().has(premiumHopperKey);
+        } else {
+            premiumHopper = false;
+        }
 
         final Location sourceLoc = sourceInv.getLocation();
         final Location targetLoc = destInv.getLocation();
@@ -131,7 +144,14 @@ public class BlockListener implements Listener {
                             if (stackInSlot == null || stackInSlot.getAmount() <= 0)
                                 return;
 
-                            int actuallyAdded = currentContainer.addItems(1);
+                            int requestedAmount;
+                            if (premiumHopper) {
+                                requestedAmount = Math.min(stackInSlot.getAmount(), stackInSlot.getMaxStackSize());
+                            } else {
+                                requestedAmount = 1;
+                            }
+
+                            int actuallyAdded = currentContainer.addItems(requestedAmount);
                             if (actuallyAdded <= 0)
                                 return;
 
